@@ -31,10 +31,11 @@ namespace CS_Solitare
         public Deck()
         {
             cardList = new List<Card>();
+            location = new Rectangle();
         }
 
         /// <summary>
-        /// s
+        /// 
         /// </summary>
         /// <param name="id"></param>
         public Deck(int id)

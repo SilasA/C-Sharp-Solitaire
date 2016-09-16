@@ -88,6 +88,8 @@ namespace CS_Solitare
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+
+
             base.Draw(gameTime);
         }
     }

@@ -9,6 +9,7 @@ namespace CS_Solitare
 {
     class Card
     {
+        // Dimensions
         const int CARDSIZE_X = 140;
         const int CARDSIZE_Y = 190;
 
@@ -20,7 +21,6 @@ namespace CS_Solitare
             Spades
         }
 
-        Suit cardSuit;
         public Suit CardSuit
         {
             get;
@@ -52,7 +52,22 @@ namespace CS_Solitare
         /// </summary>
         public Card()
         {
+        }
 
+        /// <summary>
+        /// Copy Constructor.
+        /// </summary>
+        /// <param name="copy">Card to copy from</param>
+        public Card(Card copy)
+        {
+            CardSuit = copy.CardSuit;
+            cardId = copy.cardId;
+            parentDeckId = copy.parentDeckId;
+            currentRect = copy.currentRect;
+            originalRect = copy.originalRect;
+            frameRect = copy.frameRect;
+            upperCard = copy.upperCard;
+            lowerCard = copy.lowerCard;
         }
 
         /// <summary>
@@ -68,13 +83,13 @@ namespace CS_Solitare
             currentRect = rect;
             originalRect = rect;
             this.frameRect = frameRect;
-            cardSuit = suit;
+            CardSuit = suit;
             this.cardId = cardId;
             this.parentDeckId = parentDeckId;
         }
 
         /// <summary>
-        /// 
+        /// Gets the location of the card sprite in the texture.
         /// </summary>
         /// <returns></returns>
         public Rectangle DrawFrom()
