@@ -9,9 +9,19 @@ namespace CS_Solitare
     class Hand : Deck
     {
 
-        public Hand()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        public Hand(int id) : 
+            base(id)
         {
 
+        }
+
+        public override bool IsValidMove(Card cardToMove, Card cardMoveTo)
+        {
+            return false;
         }
     }
 }

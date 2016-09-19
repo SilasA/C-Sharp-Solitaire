@@ -28,7 +28,9 @@ namespace CS_Solitare
         }
         int cardId;
 
-        int parentDeckId;
+        public bool Covered { get; set; }
+
+        public int parentDeckId { get; set; }
 
         Rectangle currentRect;
         Rectangle originalRect;
@@ -68,6 +70,15 @@ namespace CS_Solitare
             frameRect = copy.frameRect;
             upperCard = copy.upperCard;
             lowerCard = copy.lowerCard;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool IsBlack()
+        {
+            return CardSuit == Suit.Clubs || CardSuit == Suit.Spades;
         }
 
         /// <summary>

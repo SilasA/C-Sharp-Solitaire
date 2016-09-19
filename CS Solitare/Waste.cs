@@ -9,9 +9,20 @@ namespace CS_Solitare
     class Waste : Deck
     {
 
-        public Waste()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        public Waste(int id) :
+            base(id)
         {
 
+        }
+
+        public override bool IsValidMove(Card cardToMove, Card cardMoveTo)
+        {
+            // Check if the parent deck is the hand
+            return cardToMove.parentDeckId == 1000;
         }
     }
 }

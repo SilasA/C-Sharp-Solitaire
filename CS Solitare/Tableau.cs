@@ -9,9 +9,26 @@ namespace CS_Solitare
     class Tableau : Deck
     {
 
-        public Tableau()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        public Tableau(int id) :
+            base(id)
         {
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cardToMove"></param>
+        /// <param name="cardMoveTo"></param>
+        /// <returns></returns>
+        public override bool IsValidMove(Card cardToMove, Card cardMoveTo)
+        {
+            if (cardToMove.IsBlack() == cardMoveTo.IsBlack()) return false;
+            return true;
         }
     }
 }

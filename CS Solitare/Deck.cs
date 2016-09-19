@@ -21,7 +21,7 @@ namespace CS_Solitare
         }
         protected DeckType type;
 
-        protected int id;
+        public int Id { get; set; }
 
         protected Rectangle location;
 
@@ -49,6 +49,17 @@ namespace CS_Solitare
         public void AppendCard(Card card)
         {
             cardList.Add(card);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cardToMove"></param>
+        /// <param name="cardMoveTo"></param>
+        /// <returns></returns>
+        public virtual bool IsValidMove(Card cardToMove, Card cardMoveTo)
+        {
+            return !cardToMove.Covered && !cardMoveTo.Covered;
         }
 
         /// <summary>
