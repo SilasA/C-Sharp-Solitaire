@@ -40,7 +40,7 @@ namespace CS_Solitare
         /// <param name="id"></param>
         public Deck(int id)
         {
-            this.id = id;
+            Id = id;
         }
 
         /// <summary>

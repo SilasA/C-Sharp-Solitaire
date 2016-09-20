@@ -19,9 +19,14 @@ namespace CS_Solitare
 
         }
 
+        /// <summary>
+        /// Checks if the parent deck of the moving card is the hand.
+        /// </summary>
+        /// <param name="cardToMove">The card or parent card to move</param>
+        /// <param name="cardMoveTo">The target card</param>
+        /// <returns></returns>
         public override bool IsValidMove(Card cardToMove, Card cardMoveTo)
         {
-            // Check if the parent deck is the hand
             return cardToMove.parentDeckId == 1000;
         }
     }

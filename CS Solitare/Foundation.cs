@@ -20,15 +20,17 @@ namespace CS_Solitare
         }
 
         /// <summary>
-        /// 
+        /// Checks if cards are both uncovered, the same suit, and correct descending value.
         /// </summary>
-        /// <param name="cardToMove"></param>
-        /// <param name="cardMoveTo"></param>
+        /// <param name="cardToMove">The card or parent card to move</param>
+        /// <param name="cardMoveTo">The target card</param>
         /// <returns></returns>
         public override bool IsValidMove(Card cardToMove, Card cardMoveTo)
         {
-            if (!base.IsValidMove(cardToMove, cardMoveTo)) return false;
-            return true;
+            return
+                !base.IsValidMove(cardToMove, cardMoveTo) &&
+                cardToMove.CardSuit == cardMoveTo.CardSuit &&
+                cardToMove.cardId == cardMoveTo.cardId + 1;
         }
     }
 }

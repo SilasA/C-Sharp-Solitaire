@@ -26,7 +26,7 @@ namespace CS_Solitare
             get;
             set;
         }
-        int cardId;
+        public int cardId { get; set; }
 
         public bool Covered { get; set; }
 

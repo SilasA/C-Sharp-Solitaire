@@ -25,17 +25,15 @@ namespace CS_Solitare
         }
 
         /// <summary>
-        /// 
+        /// Checks if a card move is valid through the target deck.
         /// </summary>
-        /// <param name="cardToMove"></param>
-        /// <param name="cardMoveTo"></param>
+        /// <param name="cardToMove">The card or parent card to move</param>
+        /// <param name="cardMoveTo">The target card</param>
         /// <returns></returns>
         public bool IsValidMove(Card cardToMove, Card cardMoveTo)
         {
-            
-
-
-            return false;
+            return 
+                FindDeckById(cardMoveTo.parentDeckId).IsValidMove(cardToMove, cardMoveTo);
         }
 
         /// <summary>

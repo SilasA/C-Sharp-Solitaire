@@ -19,6 +19,12 @@ namespace CS_Solitare
 
         }
 
+        /// <summary>
+        /// Moves to the hand from anywhere are invalid moves.
+        /// </summary>
+        /// <param name="cardToMove">The card or parent card to move</param>
+        /// <param name="cardMoveTo">The target card</param>
+        /// <returns>false</returns>
         public override bool IsValidMove(Card cardToMove, Card cardMoveTo)
         {
             return false;
