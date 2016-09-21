@@ -8,15 +8,13 @@ namespace CS_Solitare
 {
     class Waste : Deck
     {
-
         /// <summary>
-        /// 
+        /// Default Constructor
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">ID number</param>
         public Waste(int id) :
             base(id)
         {
-
         }
 
         /// <summary>
@@ -27,7 +25,7 @@ namespace CS_Solitare
         /// <returns></returns>
         public override bool IsValidMove(Card cardToMove, Card cardMoveTo)
         {
-            return cardToMove.parentDeckId == 1000;
+            return cardToMove.ParentDeckId == 1000;
         }
     }
 }

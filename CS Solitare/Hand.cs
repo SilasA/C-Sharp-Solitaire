@@ -10,13 +10,21 @@ namespace CS_Solitare
     {
 
         /// <summary>
-        /// 
+        /// Default Constructor.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">ID number</param>
         public Hand(int id) : 
             base(id)
         {
+        }
 
+        /// <summary>
+        /// Checks if there are no more cards to transfer to the waste.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsEmpty()
+        {
+            return cardList.Count == 0;
         }
 
         /// <summary>

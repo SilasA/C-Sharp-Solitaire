@@ -14,13 +14,15 @@ namespace CS_Solitare
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        DeckSystem deckSystem;
+
         Texture2D cardSheet;
         Texture2D background;
 
         public static MouseState oldState;
 
         /// <summary>
-        /// 
+        /// Sets resolution and cursor visibility.
         /// </summary>
         public Game1()
         {
@@ -76,6 +78,8 @@ namespace CS_Solitare
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            deckSystem.Update(gameTime);
+
             oldState = state;
             base.Update(gameTime);
         }
@@ -88,7 +92,11 @@ namespace CS_Solitare
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
 
+            deckSystem.Draw(spriteBatch, cardSheet);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

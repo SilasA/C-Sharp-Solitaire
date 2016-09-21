@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace CS_Solitare
 {
     class Foundation : Deck
     {
-
         /// <summary>
-        /// 
+        /// Construct deck from ID
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">ID number</param>
         public Foundation(int id) : 
             base(id)
         {
-
         }
 
         /// <summary>
@@ -30,7 +29,7 @@ namespace CS_Solitare
             return
                 !base.IsValidMove(cardToMove, cardMoveTo) &&
                 cardToMove.CardSuit == cardMoveTo.CardSuit &&
-                cardToMove.cardId == cardMoveTo.cardId + 1;
+                cardToMove.CardId == cardMoveTo.CardId + 1;
         }
     }
 }
