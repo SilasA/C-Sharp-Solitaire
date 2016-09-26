@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace CS_Solitare
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Hand : Deck
     {
-
         /// <summary>
         /// Default Constructor.
         /// </summary>

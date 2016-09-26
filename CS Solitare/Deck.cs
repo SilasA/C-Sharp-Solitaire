@@ -12,7 +12,7 @@ namespace CS_Solitare
     {
         public List<Card> cardList { get; set; }
 
-        public static int Padding = 0;
+        public static int padding = 0;
 
         public enum DeckType
         {
@@ -45,6 +45,19 @@ namespace CS_Solitare
         public Deck(int id) : this()
         {
             Id = id;
+            if (Id >= 10 && Id <= 90) type = DeckType.Tableau;
+            else if (Id >= 100 && Id <= 900) type = DeckType.Foundation;
+            else if (Id == 1000) type = DeckType.Hand;
+            else if (Id == 2000) type = DeckType.Waste;
+        }
+
+        /// <summary>
+        /// Initializes a card.
+        /// </summary>
+        /// <param name="card">Card to initialize</param>
+        public void Initialize(ref Card card)
+        {
+            card.Initialize(new Vector2(location.X, location.Y + card.UpperCard.GetRectLocation().Y + padding), card.DrawFrom(), Id);
         }
 
         /// <summary>
@@ -56,6 +69,7 @@ namespace CS_Solitare
         {
             card.MoveTo(this);
             cardList.Add(card);
+            Initialize(ref card);
             if (inList) UpdateCardPointers();
         }
 
@@ -99,6 +113,10 @@ namespace CS_Solitare
             for (int i = 0; i < cardList.Count; i++)
                 if (cardList[i].ParentDeckId != Id)
                     cardList.RemoveAt(i);
+
+            foreach (Card card in cardList)
+            {
+            }
         }
 
         /// <summary>
@@ -108,7 +126,8 @@ namespace CS_Solitare
         /// <param name="texture">Texture to draw from</param>
         public override void Draw(SpriteBatch spriteBatch, Texture2D texture)
         {
-
+            foreach (Card card in cardList)
+                spriteBatch.Draw(texture, card.GetRectLocation(), card.DrawFrom(), Color.White);
         }
 
         /// <summary>

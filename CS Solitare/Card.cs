@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CS_Solitare
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Card : CardData
     {
         public bool Covered { get; set; }
@@ -135,8 +138,8 @@ namespace CS_Solitare
         public bool Contains(Vector2 pos)
         {
             if (Covered && !Invisible)
-                return pos.X >= currentLocation.X && pos.X <= currentLocation.X + Deck.Padding &&
-                    pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + Deck.Padding;
+                return pos.X >= currentLocation.X && pos.X <= currentLocation.X + Deck.padding &&
+                    pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + Deck.padding;
             else if (!Covered && !Invisible)
                 return pos.X >= currentLocation.X && pos.X <= currentLocation.X + CARDSIZE_X &&
                     pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + CARDSIZE_Y;

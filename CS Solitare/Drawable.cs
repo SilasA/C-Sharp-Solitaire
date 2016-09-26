@@ -28,6 +28,7 @@ namespace CS_Solitare
         /// Called to draw textures to the screen.
         /// </summary>
         /// <param name="spriteBatch">Used to draw textures to the screen</param>
+        /// <param name="texture">Texture to draw from</param>
         public virtual void Draw(SpriteBatch spriteBatch, Texture2D texture)
         {
 

@@ -33,6 +33,8 @@ namespace CS_Solitare
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            deckSystem = new DeckSystem();
         }
 
         /// <summary>

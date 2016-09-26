@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace CS_Solitare
@@ -14,7 +15,7 @@ namespace CS_Solitare
     class DeckSystem : Drawable
     {
         // Default full deck
-        static List<CardData> completeDeck;
+        public static List<CardData> completeDeck;
 
         Tableau[] tableau;
         Foundation[] foundation;
@@ -31,13 +32,15 @@ namespace CS_Solitare
             tableau = new Tableau[7];
             for (int i = 0; i < tableau.Count(); i++)
             {
-                tableau[i] = new Tableau(i * 10);
+                tableau[i] = new Tableau((i + 1) * 10);
             }
             foundation = new Foundation[4];
             for (int i = 0; i < foundation.Count(); i++)
                 foundation[i] = new Foundation(i * 100);
             hand = new Hand(1000);
             waste = new Waste(2000);
+
+            completeDeck = new List<CardData>();
 
             Populate();
         }
@@ -76,6 +79,14 @@ namespace CS_Solitare
         /// <param name="gameTime">Time state of the game</param>
         public override void Update(GameTime gameTime)
         {
+            // Call update for all decks
+            foreach (Deck deck in tableau)
+                deck.Update(gameTime);
+            foreach (Deck deck in foundation)
+                deck.Update(gameTime);
+            hand.Update(gameTime);
+            waste.Update(gameTime);
+
             MouseState state = Mouse.GetState();
 
             for (int i = 0; i < tableau.Count(); i++)
@@ -93,6 +104,21 @@ namespace CS_Solitare
         }
 
         /// <summary>
+        /// Called to draw textures to the screen.
+        /// </summary>
+        /// <param name="spriteBatch">Used to draw textures to the screen</param>
+        /// <param name="texture">Texture to draw from</param>
+        public override void Draw(SpriteBatch spriteBatch, Texture2D texture)
+        {
+            foreach (Deck deck in tableau)
+                deck.Draw(spriteBatch, texture);
+            foreach (Deck deck in foundation)
+                deck.Draw(spriteBatch, texture);
+            hand.Draw(spriteBatch, texture);
+            waste.Draw(spriteBatch, texture);
+        }
+
+        /// <summary>
         /// Populates the lists of cards with completeDeck.
         /// </summary>
         private void Populate()
@@ -106,13 +132,13 @@ namespace CS_Solitare
             Shuffle(completeDeck, out completeDeck);
 
             // Disperse amongst decks
+            int idx = 0;
             for (int i = 0; i < tableau.Count(); i++)
             {
-                int idx = completeDeck.Count - i - 1;
-                int count = completeDeck.Count - (completeDeck.Count - idx);
-                tableau[i].AppendList(completeDeck.GetRange(idx, count));
+                tableau[i].AppendList(completeDeck.GetRange(idx, i + 1));
+                idx = i + 1;
             }
-            hand.AppendList(completeDeck.GetRange(0, completeDeck.Count - 28));
+            hand.AppendList(completeDeck.GetRange(idx, completeDeck.Count - idx));
         }
 
         /// <summary>
