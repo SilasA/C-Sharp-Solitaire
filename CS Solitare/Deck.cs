@@ -68,7 +68,7 @@ namespace CS_Solitare
         public void AppendCard(Card card, bool inList = false)
         {
             card.MoveTo(this);
-            cardList.Add(card);
+            cardList.Add(new Card(card));
             Initialize(ref card);
             if (inList) UpdateCardPointers();
         }
@@ -80,7 +80,9 @@ namespace CS_Solitare
         public void AppendList(IEnumerable<CardData> collection)
         {
             foreach (CardData card in collection)
+            {
                 AppendCard(new Card(card), true);
+            }
             UpdateCardPointers();
         }
 
@@ -113,10 +115,6 @@ namespace CS_Solitare
             for (int i = 0; i < cardList.Count; i++)
                 if (cardList[i].ParentDeckId != Id)
                     cardList.RemoveAt(i);
-
-            foreach (Card card in cardList)
-            {
-            }
         }
 
         /// <summary>

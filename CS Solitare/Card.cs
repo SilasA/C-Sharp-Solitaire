@@ -11,29 +11,21 @@ namespace CS_Solitare
     /// <summary>
     /// 
     /// </summary>
-    class Card : CardData
+    class Card
     {
+        // Dimensions
+        public const int CARDSIZE_X = 140;
+        public const int CARDSIZE_Y = 190;
+
         public bool Covered { get; set; }
         public bool Invisible { get; set; }
         public bool Selected { get; set; }
-        public int ParentDeckId { get; set; }
 
         Vector2 currentLocation;
         Vector2 originalLocation;
         Rectangle frameRect;
 
-        Card upperCard;
-        public Card UpperCard
-        {
-            get { return upperCard; }
-            set { upperCard = value; }
-        }
-        Card lowerCard;
-        public Card LowerCard
-        {
-            get { return lowerCard; }
-            set { lowerCard = value; }
-        }
+        public int dataIndex { get; private set; }
 
         /// <summary>
         /// Copy Constructor.
@@ -48,15 +40,6 @@ namespace CS_Solitare
             frameRect = copy.frameRect;
             upperCard = copy.upperCard;
             lowerCard = copy.lowerCard;
-        }
-
-        /// <summary>
-        /// Copy constructor purely for data.
-        /// </summary>
-        /// <param name="copy">Copy of data</param>
-        public Card(CardData copy) :
-            base(copy)
-        {
         }
 
         /// <summary>

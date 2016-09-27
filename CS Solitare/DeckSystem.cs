@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+// TODO: Deck system contains card data of parent decks, suits, ids, etc...
+// Card is separate and will control draw location, etc...
+
 namespace CS_Solitare
 {
     /// <summary>
@@ -51,7 +54,7 @@ namespace CS_Solitare
         /// <param name="cardToMove">The card or parent card to move</param>
         /// <param name="cardMoveTo">The target card</param>
         /// <returns></returns>
-        public bool IsValidMove(Card cardToMove, Card cardMoveTo)
+        public bool IsValidMove(CardData cardToMove, CardData cardMoveTo)
         {
             return 
                 FindDeckById(cardMoveTo.ParentDeckId).IsValidMove(cardToMove, cardMoveTo);

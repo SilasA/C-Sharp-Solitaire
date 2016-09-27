@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace CS_Solitare
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class CardData
     {
-        // Dimensions
-        public const int CARDSIZE_X = 140;
-        public const int CARDSIZE_Y = 190;
-
         public enum Suit
         {
             Clubs,
@@ -20,19 +19,30 @@ namespace CS_Solitare
             Spades
         }
 
-        public Suit CardSuit
-        {
-            get;
-            set;
-        }
+        public Suit CardSuit { get; set; }
         public int CardId { get; set; }
+
+        public int parentDeckId { get; set; }
+
+        Card upperCard;
+        public Card UpperCard
+        {
+            get { return upperCard; }
+            set { upperCard = value; }
+        }
+        Card lowerCard;
+        public Card LowerCard
+        {
+            get { return lowerCard; }
+            set { lowerCard = value; }
+        }
 
         /// <summary>
         /// Initialization Constructor.
         /// </summary>
         /// <param name="suit">Suit of card</param>
         /// <param name="cardId">Card value 1-13</param>
-        public CardData(Suit suit, int cardId)
+        public CardData(Suit suit, int cardId, int parentDeckId)
         {
             CardSuit = suit;
             CardId = cardId;
