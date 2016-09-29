@@ -8,9 +8,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CS_Solitare
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Deck : Drawable
     {
-        public List<Card> cardList { get; set; }
+        // List of card indices in master list
+        public List<int> cardList { get; private set; }
 
         public static int padding = 0;
 
@@ -34,7 +38,7 @@ namespace CS_Solitare
         /// </summary>
         public Deck()
         {
-            cardList = new List<Card>();
+            cardList = new List<int>();
             location = new Rectangle();
         }
 
@@ -52,41 +56,6 @@ namespace CS_Solitare
         }
 
         /// <summary>
-        /// Initializes a card.
-        /// </summary>
-        /// <param name="card">Card to initialize</param>
-        public void Initialize(ref Card card)
-        {
-            card.Initialize(new Vector2(location.X, location.Y + card.UpperCard.GetRectLocation().Y + padding), card.DrawFrom(), Id);
-        }
-
-        /// <summary>
-        /// Adds a card to the end of the card list.
-        /// </summary>
-        /// <param name="card">Card to add</param>
-        /// <param name="inList">If adding a batch of cards</param>
-        public void AppendCard(Card card, bool inList = false)
-        {
-            card.MoveTo(this);
-            cardList.Add(new Card(card));
-            Initialize(ref card);
-            if (inList) UpdateCardPointers();
-        }
-
-        /// <summary>
-        /// Adds a list of cards to the end of the card list.
-        /// </summary>
-        /// <param name="collection">Collection to add</param>
-        public void AppendList(IEnumerable<CardData> collection)
-        {
-            foreach (CardData card in collection)
-            {
-                AppendCard(new Card(card), true);
-            }
-            UpdateCardPointers();
-        }
-
-        /// <summary>
         /// Return the location of a card if it were to be added to the top of the deck.
         /// </summary>
         /// <returns>Default deck location</returns>
@@ -101,7 +70,7 @@ namespace CS_Solitare
         /// <param name="cardToMove">The card in motion</param>
         /// <param name="cardMoveTo">The target card</param>
         /// <returns></returns>
-        public virtual bool IsValidMove(Card cardToMove, Card cardMoveTo)
+        public virtual bool IsValidMove(CardData cardToMove, CardData cardMoveTo)
         {
             return !cardToMove.Covered && !cardMoveTo.Covered;
         }
@@ -112,9 +81,7 @@ namespace CS_Solitare
         /// <param name="gameTime">Time state of the game</param>
         public override void Update(GameTime gameTime)
         {
-            for (int i = 0; i < cardList.Count; i++)
-                if (cardList[i].ParentDeckId != Id)
-                    cardList.RemoveAt(i);
+
         }
 
         /// <summary>
@@ -124,21 +91,7 @@ namespace CS_Solitare
         /// <param name="texture">Texture to draw from</param>
         public override void Draw(SpriteBatch spriteBatch, Texture2D texture)
         {
-            foreach (Card card in cardList)
-                spriteBatch.Draw(texture, card.GetRectLocation(), card.DrawFrom(), Color.White);
-        }
 
-        /// <summary>
-        /// Sets the card's pointers to its current parent and child cards.
-        /// </summary>
-        private void UpdateCardPointers()
-        {
-            for (int i = 0; i < cardList.Count; i++)
-            {
-                // If in-range, set the upper and lower card references
-                cardList[i].UpperCard = i > 0 ? cardList[i - 1] : null;
-                cardList[i].LowerCard = i < cardList.Count - 1 ? cardList[i + 1] : null;
-            }
         }
     }
 }

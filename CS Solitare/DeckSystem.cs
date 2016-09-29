@@ -57,7 +57,7 @@ namespace CS_Solitare
         public bool IsValidMove(CardData cardToMove, CardData cardMoveTo)
         {
             return 
-                FindDeckById(cardMoveTo.ParentDeckId).IsValidMove(cardToMove, cardMoveTo);
+                FindDeckById(cardMoveTo.parentDeckId).IsValidMove(cardToMove, cardMoveTo);
         }
 
         /// <summary>
@@ -92,17 +92,6 @@ namespace CS_Solitare
 
             MouseState state = Mouse.GetState();
 
-            for (int i = 0; i < tableau.Count(); i++)
-            {
-                foreach (Card card in tableau[i].cardList)
-                {
-                    if (IsLeftClicked(state) && card.Contains(new Vector2(state.X, state.Y)))
-                    {
-
-                    }
-                }
-            }
-
             base.Update(gameTime);
         }
 
@@ -126,22 +115,8 @@ namespace CS_Solitare
         /// </summary>
         private void Populate()
         {
-            // Populate list
-            for (int s = 0; s < 4; s++)
-                for (int i = 1; i <= 13; i++)
-                    completeDeck.Add(new CardData((CardData.Suit)s, i));
-
             // Shuffle
             Shuffle(completeDeck, out completeDeck);
-
-            // Disperse amongst decks
-            int idx = 0;
-            for (int i = 0; i < tableau.Count(); i++)
-            {
-                tableau[i].AppendList(completeDeck.GetRange(idx, i + 1));
-                idx = i + 1;
-            }
-            hand.AppendList(completeDeck.GetRange(idx, completeDeck.Count - idx));
         }
 
         /// <summary>
@@ -169,8 +144,6 @@ namespace CS_Solitare
         /// </summary>
         private void MoveOneToWaste()
         {
-            waste.AppendCard(hand.cardList[hand.cardList.Count - 1]);
-            waste.cardList[waste.cardList.Count - 1].Covered = false;
         }
 
         /// <summary>
@@ -178,7 +151,6 @@ namespace CS_Solitare
         /// </summary>
         private void MoveAllToHand()
         {
-            hand.AppendList(hand.cardList);
         }
 
         /// <summary>

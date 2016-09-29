@@ -17,10 +17,6 @@ namespace CS_Solitare
         public const int CARDSIZE_X = 140;
         public const int CARDSIZE_Y = 190;
 
-        public bool Covered { get; set; }
-        public bool Invisible { get; set; }
-        public bool Selected { get; set; }
-
         Vector2 currentLocation;
         Vector2 originalLocation;
         Rectangle frameRect;
@@ -28,50 +24,17 @@ namespace CS_Solitare
         public int dataIndex { get; private set; }
 
         /// <summary>
-        /// Copy Constructor.
-        /// </summary>
-        /// <param name="copy">Card to copy from</param>
-        public Card(Card copy) :
-            base(copy)
-        {
-            ParentDeckId = copy.ParentDeckId;
-            currentLocation = copy.currentLocation;
-            originalLocation = copy.originalLocation;
-            frameRect = copy.frameRect;
-            upperCard = copy.upperCard;
-            lowerCard = copy.lowerCard;
-        }
-
-        /// <summary>
         /// Full constructor for all data.
         /// </summary>
         /// <param name="loc">Location of the card on-screen</param>
         /// <param name="frameRect">Location of the card sprite in texture</param>
-        /// <param name="parentDeckId">ID number of parent deck</param>
-        /// <param name="suit">Suit of the card</param>
-        /// <param name="cardId">Card value 1-13</param>
-        public Card(Vector2 loc, Rectangle frameRect, int parentDeckId, Suit suit, int cardId) :
-            base(suit, cardId)
+        /// <param name="dataIndex">Index location of data card</param>
+        public Card(Vector2 loc, Rectangle frameRect, int dataIndex)
         {
             currentLocation = loc;
             originalLocation = loc;
             this.frameRect = frameRect;
-            ParentDeckId = parentDeckId;
-        }
-
-        /// <summary>
-        /// Initializer intended for use after Constructing the card with Card(CardData copy).
-        /// </summary>
-        /// <param name="loc">Location of the card on-screen</param>
-        /// <param name="frameRect">Location of card sprite in texture</param>
-        /// <param name="parentDeckId">ID number of parent deck</param>
-        public void Initialize(Vector2 loc, Rectangle frameRect, int parentDeckId)
-        {
-            originalLocation = loc;
-            currentLocation = originalLocation;
-            this.frameRect = frameRect;
-            ParentDeckId = parentDeckId;
-            Covered = true;
+            this.dataIndex = dataIndex;
         }
 
         /// <summary>
@@ -100,8 +63,6 @@ namespace CS_Solitare
         {
             originalLocation = pDeck.CalculateNewCardPosition();
             currentLocation = originalLocation;
-            ParentDeckId = pDeck.Id;
-            FindFrameRect();
         }
 
         /// <summary>
@@ -120,21 +81,14 @@ namespace CS_Solitare
         /// <returns>If within card</returns>
         public bool Contains(Vector2 pos)
         {
-            if (Covered && !Invisible)
+            /*if (Covered && !Invisible)
                 return pos.X >= currentLocation.X && pos.X <= currentLocation.X + Deck.padding &&
                     pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + Deck.padding;
             else if (!Covered && !Invisible)
                 return pos.X >= currentLocation.X && pos.X <= currentLocation.X + CARDSIZE_X &&
                     pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + CARDSIZE_Y;
-            else return false;
-        }
-
-        /// <summary>
-        /// Finds the frame location in the texture using the CardId and CardSuit.
-        /// </summary>
-        private void FindFrameRect()
-        {
-            frameRect = new Rectangle(CARDSIZE_X * CardId - 1, CARDSIZE_Y * (int)CardSuit, CARDSIZE_X, CARDSIZE_Y);
+            else return false;*/
+            return false;
         }
     }
 }

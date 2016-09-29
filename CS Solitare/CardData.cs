@@ -18,11 +18,22 @@ namespace CS_Solitare
             Diamonds,
             Spades
         }
+        public enum Visibility
+        {
+            Invisible,
+            Covered,
+            Uncovered
+        }
 
-        public Suit CardSuit { get; set; }
-        public int CardId { get; set; }
+        public Visibility visibility { get; private set; }
+        public Suit CardSuit { get; private set; }
+        public int CardId { get; private set; }
 
         public int parentDeckId { get; set; }
+
+        public bool Covered => visibility == Visibility.Covered;
+        public bool Invisible => visibility == Visibility.Invisible;
+        public bool Uncovered => visibility == Visibility.Uncovered;
 
         Card upperCard;
         public Card UpperCard

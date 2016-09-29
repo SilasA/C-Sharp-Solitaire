@@ -23,9 +23,9 @@ namespace CS_Solitare
         /// <param name="cardToMove">The card or parent card to move</param>
         /// <param name="cardMoveTo">The target card</param>
         /// <returns></returns>
-        public override bool IsValidMove(Card cardToMove, Card cardMoveTo)
+        public override bool IsValidMove(CardData cardToMove, CardData cardMoveTo)
         {
-            return cardToMove.ParentDeckId == 1000;
+            return cardToMove.parentDeckId == 1000;
         }
     }
 }
