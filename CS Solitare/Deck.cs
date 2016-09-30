@@ -91,7 +91,10 @@ namespace CS_Solitare
         /// <param name="texture">Texture to draw from</param>
         public override void Draw(SpriteBatch spriteBatch, Texture2D texture)
         {
-
+            foreach (int c in cardList)
+            {
+                
+            }
         }
     }
 }

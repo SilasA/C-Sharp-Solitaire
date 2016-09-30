@@ -13,13 +13,18 @@ namespace CS_Solitare
     /// </summary>
     class Tableau : Deck
     {
+        private int startLimit;
+        public bool IsAtStartLimit => cardList.Count == startLimit;
+
         /// <summary>
         /// Default Constructor.
         /// </summary>
         /// <param name="id">ID number</param>
-        public Tableau(int id) :
+        public Tableau(int id, int startLimit) :
             base(id)
         {
+            padding = 20;
+            this.startLimit = startLimit;
         }
 
         /// <summary>

@@ -17,9 +17,9 @@ namespace CS_Solitare
         public const int CARDSIZE_X = 140;
         public const int CARDSIZE_Y = 190;
 
-        Vector2 currentLocation;
-        Vector2 originalLocation;
-        Rectangle frameRect;
+        public Vector2 currentLocation { get; private set; }
+        public Vector2 originalLocation { get; private set; }
+        public Rectangle frameRect { get; private set; }
 
         public int dataIndex { get; private set; }
 
@@ -38,30 +38,10 @@ namespace CS_Solitare
         }
 
         /// <summary>
-        /// Returns the Vector2 coordinates in a Rectangle.
-        /// </summary>
-        /// <returns></returns>
-        public Rectangle GetRectLocation()
-        {
-            return new Rectangle((int)currentLocation.X, (int)currentLocation.Y, CARDSIZE_X, CARDSIZE_Y);
-        }
-
-        /// <summary>
         /// Returns the card to where it was before selection.
         /// </summary>
         public void ReturnToOrigin()
         {
-            currentLocation = originalLocation;
-        }
-
-        /// <summary>
-        /// Changes this card's ownership to a new deck.
-        /// This is called in the parent deck's append card.
-        /// </summary>
-        /// <param name="pDeck">Deck to move to</param>
-        public void MoveTo(Deck pDeck)
-        {
-            originalLocation = pDeck.CalculateNewCardPosition();
             currentLocation = originalLocation;
         }
 
@@ -81,14 +61,14 @@ namespace CS_Solitare
         /// <returns>If within card</returns>
         public bool Contains(Vector2 pos)
         {
-            /*if (Covered && !Invisible)
+            CardData cd = DeckSystem.cards[dataIndex];
+            if (cd.Covered && !cd.Invisible)
                 return pos.X >= currentLocation.X && pos.X <= currentLocation.X + Deck.padding &&
                     pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + Deck.padding;
-            else if (!Covered && !Invisible)
+            else if (!cd.Covered && !cd.Invisible)
                 return pos.X >= currentLocation.X && pos.X <= currentLocation.X + CARDSIZE_X &&
                     pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + CARDSIZE_Y;
-            else return false;*/
-            return false;
+            else return false;
         }
     }
 }

@@ -7,9 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-// TODO: Deck system contains card data of parent decks, suits, ids, etc...
-// Card is separate and will control draw location, etc...
-
 namespace CS_Solitare
 {
     /// <summary>
@@ -17,35 +14,45 @@ namespace CS_Solitare
     /// </summary>
     class DeckSystem : Drawable
     {
-        // Default full deck
-        public static List<CardData> completeDeck;
+        public static List<CardData> carddatum;
+        public static List<Card> cards;
 
         Tableau[] tableau;
         Foundation[] foundation;
-
         Hand hand;
         Waste waste;
 
         /// <summary>
-        /// Initializes the decks with new IDs and calls Populate().
+        /// Initializes the decks with new IDs.
         /// </summary>
         public DeckSystem()
         {
-            // Initialize decks
             tableau = new Tableau[7];
-            for (int i = 0; i < tableau.Count(); i++)
-            {
-                tableau[i] = new Tableau((i + 1) * 10);
-            }
             foundation = new Foundation[4];
+            for (int i = 0; i < tableau.Count(); i++)
+                tableau[i] = new Tableau((i + 1) * 10, i + 1);
             for (int i = 0; i < foundation.Count(); i++)
                 foundation[i] = new Foundation(i * 100);
             hand = new Hand(1000);
             waste = new Waste(2000);
 
-            completeDeck = new List<CardData>();
+            carddatum = new List<CardData>();
+            cards = new List<Card>();
 
-            Populate();
+            Random rn = new Random();
+            int currentDeckId = 00;
+            int idx = 0;
+            for (int s = 0; s < 4; s++)
+            {
+                for (int i = 0; i < 13; i++)
+                {
+                    currentDeckId = idx >= tableau.Count() ? 1000 : rn.Next(1, tableau.Count() + 1) * 10;
+                    carddatum.Add(new CardData((CardData.Suit)s, i, currentDeckId));
+                    if (tableau[idx >= tableau.Count() ? 0 : idx].IsAtStartLimit) idx++;
+                    FindDeckById(currentDeckId).cardList.Add(cards[cards.Count - 1].dataIndex);
+
+                }
+            }
         }
 
         /// <summary>
@@ -82,14 +89,6 @@ namespace CS_Solitare
         /// <param name="gameTime">Time state of the game</param>
         public override void Update(GameTime gameTime)
         {
-            // Call update for all decks
-            foreach (Deck deck in tableau)
-                deck.Update(gameTime);
-            foreach (Deck deck in foundation)
-                deck.Update(gameTime);
-            hand.Update(gameTime);
-            waste.Update(gameTime);
-
             MouseState state = Mouse.GetState();
 
             base.Update(gameTime);
@@ -108,35 +107,6 @@ namespace CS_Solitare
                 deck.Draw(spriteBatch, texture);
             hand.Draw(spriteBatch, texture);
             waste.Draw(spriteBatch, texture);
-        }
-
-        /// <summary>
-        /// Populates the lists of cards with completeDeck.
-        /// </summary>
-        private void Populate()
-        {
-            // Shuffle
-            Shuffle(completeDeck, out completeDeck);
-        }
-
-        /// <summary>
-        /// Shuffles a list of cards.
-        /// </summary>
-        /// <param name="list">List to shuffle</param>
-        /// <param name="oList">List to recieve shuffled list</param>
-        private void Shuffle(List<CardData> list, out List<CardData> oList)
-        {
-            Random ran = new Random();
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = ran.Next(n + 1);
-                CardData value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
-            oList = new List<CardData>(list);
         }
 
         /// <summary>
