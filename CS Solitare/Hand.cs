@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace CS_Solitare
 {
     /// <summary>
-    /// 
+    /// The derivative deck for the hand.
     /// </summary>
     class Hand : Deck
     {
@@ -16,7 +17,7 @@ namespace CS_Solitare
         /// </summary>
         /// <param name="id">ID number</param>
         public Hand(int id) : 
-            base(id)
+            base(id, new Rectangle(PADDING, PADDING, Card.CARDSIZE_X, Card.CARDSIZE_Y), 0)
         {
         }
 

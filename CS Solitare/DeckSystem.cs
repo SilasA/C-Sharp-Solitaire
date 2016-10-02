@@ -27,32 +27,51 @@ namespace CS_Solitare
         /// </summary>
         public DeckSystem()
         {
+            // Init Decks with Id
             tableau = new Tableau[7];
             foundation = new Foundation[4];
             for (int i = 0; i < tableau.Count(); i++)
-                tableau[i] = new Tableau((i + 1) * 10, i + 1);
+                tableau[i] = new Tableau((i + 1) * 10);
             for (int i = 0; i < foundation.Count(); i++)
-                foundation[i] = new Foundation(i * 100);
+                foundation[i] = new Foundation((i + 1) * 100);
             hand = new Hand(1000);
             waste = new Waste(2000);
 
+            // Init lists
             carddatum = new List<CardData>();
             cards = new List<Card>();
+            List<int> tempCardList = new List<int>();
+            for (int i = 0; i < 52; i++)
+                tempCardList.Add(i);
+            tempCardList = Shuffle(tempCardList);
 
-            Random rn = new Random();
-            int currentDeckId = 00;
-            int idx = 0;
+            // Populate lists
             for (int s = 0; s < 4; s++)
             {
                 for (int i = 0; i < 13; i++)
                 {
-                    currentDeckId = idx >= tableau.Count() ? 1000 : rn.Next(1, tableau.Count() + 1) * 10;
-                    carddatum.Add(new CardData((CardData.Suit)s, i, currentDeckId));
-                    if (tableau[idx >= tableau.Count() ? 0 : idx].IsAtStartLimit) idx++;
-                    FindDeckById(currentDeckId).cardList.Add(cards[cards.Count - 1].dataIndex);
-
+                    carddatum.Add(new CardData((CardData.Suit)s, i, carddatum.Count));
+                    cards.Add(
+                        new Card(Vector2.Zero, 
+                        new Rectangle(i * Card.CARDSIZE_X, s * Card.CARDSIZE_Y, Card.CARDSIZE_X, Card.CARDSIZE_Y),
+                        carddatum.Count - 1));
                 }
             }
+
+            // Populate decks
+            int idx = 0;
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < i + 1; j++)
+                {
+                    tableau[i].AddCard(tempCardList[idx]);
+                    idx++;
+                }
+                tableau[i].UncoverTop();
+            }
+            for (int i = idx; i < 52; i++)
+                hand.AddCard(tempCardList[i]);
+
         }
 
         /// <summary>
@@ -63,8 +82,24 @@ namespace CS_Solitare
         /// <returns></returns>
         public bool IsValidMove(CardData cardToMove, CardData cardMoveTo)
         {
-            return 
+            return
                 FindDeckById(cardMoveTo.parentDeckId).IsValidMove(cardToMove, cardMoveTo);
+        }
+
+        /// <summary>
+        /// Adds a card data index to a deck's cardlist.
+        /// Hopefully this is just temporary.
+        /// </summary>
+        /// <param name="id">Id of the deck</param>
+        /// <param name="idx">Index to add</param>
+        public void AddCardIdToDeck(int id, int idx)
+        {
+            for (int i = 0; i < tableau.Count(); i++)
+                if (tableau[i].Id == id) tableau[i].AddCard(idx);
+            for (int i = 0; i < foundation.Count(); i++)
+                if (foundation[i].Id == id) foundation[i].AddCard(idx);
+            if (hand.Id == id) hand.AddCard(idx);
+            if (waste.Id == id) waste.AddCard(idx);
         }
 
         /// <summary>
@@ -90,6 +125,12 @@ namespace CS_Solitare
         public override void Update(GameTime gameTime)
         {
             MouseState state = Mouse.GetState();
+            foreach (Deck deck in tableau)
+                deck.Update(gameTime);
+            foreach (Deck deck in foundation)
+                deck.Update(gameTime);
+            hand.Update(gameTime);
+            waste.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -132,6 +173,26 @@ namespace CS_Solitare
         {
             return state.LeftButton == ButtonState.Pressed &&
                 Game1.oldState.LeftButton == ButtonState.Released;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        private List<int> Shuffle(List<int> list)
+        {
+            Random rng = new Random();
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                int value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+            return new List<int>(list);
         }
     }
 }

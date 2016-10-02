@@ -11,6 +11,9 @@ namespace CS_Solitare
     /// </summary>
     public class Game1 : Game
     {
+        public const int WINDOW_WIDTH = 1140;
+        public const int WINDOW_HEIGHT = 720;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -28,8 +31,8 @@ namespace CS_Solitare
         {
             // Graphics
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1140;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
+            graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -96,9 +99,8 @@ namespace CS_Solitare
 
             spriteBatch.Begin();
             spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
-
-            deckSystem.Draw(spriteBatch, cardSheet);
             spriteBatch.End();
+            deckSystem.Draw(spriteBatch, cardSheet);
 
             base.Draw(gameTime);
         }

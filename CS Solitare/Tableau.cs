@@ -13,35 +13,26 @@ namespace CS_Solitare
     /// </summary>
     class Tableau : Deck
     {
-        private int startLimit;
-        public bool IsAtStartLimit => cardList.Count == startLimit;
+        public static int padding; 
 
         /// <summary>
         /// Default Constructor.
         /// </summary>
         /// <param name="id">ID number</param>
-        public Tableau(int id, int startLimit) :
-            base(id)
+        /// <param name="startLimit">Max. amount of cards at initialization of deck</param>
+        public Tableau(int id) :
+            base(id, new Rectangle(Card.CARDSIZE_X * (id / 10 - 1) + PADDING * (id / 10), Card.CARDSIZE_Y + PADDING * 2, Card.CARDSIZE_X, Card.CARDSIZE_Y), 20)
         {
-            padding = 20;
-            this.startLimit = startLimit;
+            padding = cardPadding;
         }
 
         /// <summary>
         /// Uncovers the top card of the deck.
         /// </summary>
-        public void UncoverTop()
+        public override void UncoverTop()
         {
-            // Make top card.visibility = Visibility.Uncovered
-        }
-
-        /// <summary>
-        /// Return the location of a card if it were to be added to the top of the deck.
-        /// </summary>
-        /// <returns></returns>
-        public override Vector2 CalculateNewCardPosition()
-        {
-            return new Vector2(location.X, location.Y + cardList.Count * padding);
+            if (cardList.Count > 0)
+                DeckSystem.carddatum[cardList[Top()]].visibility = CardData.Visibility.Uncovered;
         }
 
         /// <summary>
@@ -65,7 +56,7 @@ namespace CS_Solitare
         public override void Update(GameTime gameTime)
         {
             // Adjust padding with card count
-            padding = cardList.Count > 10 ? 15 : 20; // Temp values
+            cardPadding = cardList.Count > 10 ? 15 : 20;
             base.Update(gameTime);
         }
 

@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework;
 
 namespace CS_Solitare
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Foundation : Deck
     {
         /// <summary>
@@ -14,7 +17,9 @@ namespace CS_Solitare
         /// </summary>
         /// <param name="id">ID number</param>
         public Foundation(int id) : 
-            base(id)
+            base(id, new Rectangle(
+                Game1.WINDOW_WIDTH - (Card.CARDSIZE_X * (id / 10 - 1)) + (PADDING * (id / 10)),
+                PADDING, Card.CARDSIZE_X, Card.CARDSIZE_Y), 0)
         {
         }
 

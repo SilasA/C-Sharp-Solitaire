@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CS_Solitare
 {
     /// <summary>
-    /// 
+    /// Contains all of the data per card.
     /// </summary>
     class CardData
     {
@@ -25,48 +25,33 @@ namespace CS_Solitare
             Uncovered
         }
 
-        public Visibility visibility { get; private set; }
+        public Visibility visibility { get; set; }
         public Suit CardSuit { get; private set; }
         public int CardId { get; private set; }
 
         public int parentDeckId { get; set; }
+        public int currentIndex { get; private set; }
 
         public bool Covered => visibility == Visibility.Covered;
         public bool Invisible => visibility == Visibility.Invisible;
         public bool Uncovered => visibility == Visibility.Uncovered;
 
-        Card upperCard;
-        public Card UpperCard
-        {
-            get { return upperCard; }
-            set { upperCard = value; }
-        }
-        Card lowerCard;
-        public Card LowerCard
-        {
-            get { return lowerCard; }
-            set { lowerCard = value; }
-        }
+        public int parentCard { get; set; }
+        public int childCard { get; set; }
 
         /// <summary>
         /// Initialization Constructor.
         /// </summary>
         /// <param name="suit">Suit of card</param>
         /// <param name="cardId">Card value 1-13</param>
-        public CardData(Suit suit, int cardId, int parentDeckId)
+        /// <param name="parentDeckId">Id of the containing deck</param>
+        /// <param name="currentIndex">Location in datum list</param>
+        public CardData(Suit suit, int cardId, int currentIndex)
         {
             CardSuit = suit;
             CardId = cardId;
-        }
-
-        /// <summary>
-        /// Copy Constructor.
-        /// </summary>
-        /// <param name="copy">Copy</param>
-        public CardData(CardData copy)
-        {
-            CardId = copy.CardId;
-            CardSuit = copy.CardSuit;
+            this.currentIndex = currentIndex;
+            visibility = Visibility.Invisible;
         }
 
         /// <summary>
@@ -76,6 +61,14 @@ namespace CS_Solitare
         public bool IsBlack()
         {
             return CardSuit == Suit.Clubs || CardSuit == Suit.Spades;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SetParentChild()
+        {
+            
         }
     }
 }
