@@ -91,18 +91,13 @@ namespace CS_Solitare
             foreach (int c in cardList)
             {
                 CardData cd = DeckSystem.carddatum[DeckSystem.cards[c].dataIndex];
-                DeckSystem.cards[c].originalLocation = new Vector2(location.X, location.Y + cardPadding * idx);
-                if (cd.Uncovered)
+                if (DeckSystem.cards[c].selected)
                 {
 
                 }
-                else if (cd.Covered)
+                else
                 {
-
-                }
-                else if (cd.Invisible)
-                {
-
+                    DeckSystem.cards[c].originalLocation = new Vector2(location.X, location.Y + cardPadding * idx);
                 }
                 idx++;
             }
@@ -144,15 +139,42 @@ namespace CS_Solitare
         }
 
         /// <summary>
-        /// 
+        /// Adds a card to the deck.
+        ///     - Sets position
+        ///     - Sets deck Id
+        ///     - Sets if it's padded
+        ///     - Sets the current card's parent and child cards
         /// </summary>
-        /// <param name="card"></param>
+        /// <param name="card">Card representation to add</param>
         public void AddCard(int card)
         {
             DeckSystem.cards[card].originalLocation = CalculateNewCardPosition();
             cardList.Add(card);
             DeckSystem.carddatum[cardList[Top()]].parentDeckId = Id;
             DeckSystem.cards[cardList[Top()]].padded = cardPadding != 0;
+
+            // Set parent and child card if any
+            if (Top() - 1 > 0)
+            {
+                DeckSystem.carddatum[card].parentCard = DeckSystem.cards[cardList[Top() - 1]].dataIndex;
+                DeckSystem.carddatum[card].childCard = -1;
+                DeckSystem.carddatum[cardList[Top() - 1]].childCard = card;
+            }
+            else
+            {
+                DeckSystem.carddatum[card].parentCard = -1;
+                DeckSystem.carddatum[card].childCard = -1;
+            }
+
         } 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="card"></param>
+        public void RemoveCard(int card)
+        {
+            
+        }
     }
 }

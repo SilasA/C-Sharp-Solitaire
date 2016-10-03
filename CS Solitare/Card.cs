@@ -40,6 +40,7 @@ namespace CS_Solitare
         public int dataIndex { get; private set; }
 
         public bool padded { get; set; }
+        public bool selected;
 
         /// <summary>
         /// Full constructor for all data.
