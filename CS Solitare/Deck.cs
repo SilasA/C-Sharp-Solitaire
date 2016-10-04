@@ -169,12 +169,31 @@ namespace CS_Solitare
         } 
 
         /// <summary>
-        /// 
+        /// Removes a card from the deck.
         /// </summary>
-        /// <param name="card"></param>
-        public void RemoveCard(int card)
+        /// <param name="card">Card to remove</param>
+        /// <returns>The id of the card removed</returns>
+        public int RemoveCard(int card)
         {
-            
+            int idx = cardList.IndexOf(card);
+            if (idx - 1 >= 0)
+            {
+                DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].parentCard].childCard = 
+                    DeckSystem.carddatum[cardList[idx]].childCard;
+                if (idx <= Top())
+                {
+                    DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard =
+                        DeckSystem.carddatum[cardList[idx]].parentCard;
+                }
+                else
+                    DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
+
+            }
+            if (cardList[idx] - 1 >= 0)
+                DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
+            DeckSystem.carddatum[cardList[idx]].parentDeckId = 0;
+            cardList.Remove(card);
+            return card;
         }
     }
 }

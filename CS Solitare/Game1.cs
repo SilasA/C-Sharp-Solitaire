@@ -36,8 +36,6 @@ namespace CS_Solitare
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-            deckSystem = new DeckSystem();
         }
 
         /// <summary>
@@ -48,6 +46,7 @@ namespace CS_Solitare
         /// </summary>
         protected override void Initialize()
         {
+            deckSystem = new DeckSystem();
             base.Initialize();
         }
 
@@ -82,6 +81,9 @@ namespace CS_Solitare
             MouseState state = Mouse.GetState();
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            if (Keyboard.GetState().IsKeyDown(Keys.R))
+                Initialize();
 
             deckSystem.Update(gameTime);
 

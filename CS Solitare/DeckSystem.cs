@@ -125,6 +125,9 @@ namespace CS_Solitare
         public override void Update(GameTime gameTime)
         {
             MouseState state = Mouse.GetState();
+
+            // TODO: transfer from hand to waste
+
             foreach (Deck deck in tableau)
                 deck.Update(gameTime);
             foreach (Deck deck in foundation)
@@ -155,6 +158,7 @@ namespace CS_Solitare
         /// </summary>
         private void MoveOneToWaste()
         {
+            waste.AddCard(hand.RemoveCard(hand.cardList[hand.Top()]));
         }
 
         /// <summary>
@@ -162,6 +166,8 @@ namespace CS_Solitare
         /// </summary>
         private void MoveAllToHand()
         {
+            for (int i = 0; i < waste.cardList.Count;)
+                hand.AddCard(waste.RemoveCard(waste.cardList[waste.Top()]));
         }
 
         /// <summary>
@@ -176,9 +182,9 @@ namespace CS_Solitare
         }
 
         /// <summary>
-        /// 
+        /// Shuffles a list.
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="list">List to shuffle</param>
         /// <returns></returns>
         private List<int> Shuffle(List<int> list)
         {
