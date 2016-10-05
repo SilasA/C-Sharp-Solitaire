@@ -178,12 +178,30 @@ namespace CS_Solitare
         /// <param name="texture">Texture to draw from</param>
         public override void Draw(SpriteBatch spriteBatch, Texture2D texture)
         {
+            spriteBatch.Begin();
             foreach (Deck deck in tableau)
                 deck.Draw(spriteBatch, texture);
             foreach (Deck deck in foundation)
                 deck.Draw(spriteBatch, texture);
             hand.Draw(spriteBatch, texture);
             waste.Draw(spriteBatch, texture);
+            spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Called to draw the selected texture to the screen.
+        /// </summary>
+        /// <param name="spriteBatch">Used to draw textures to the screen</param>
+        /// <param name="texture">Texture to draw from</param>
+        public override void DrawSelected(SpriteBatch spriteBatch, Texture2D texture)
+        {
+            spriteBatch.Begin();
+            foreach (Deck deck in tableau)
+                deck.DrawSelected(spriteBatch, texture);
+            foreach (Deck deck in foundation)
+                deck.DrawSelected(spriteBatch, texture);
+            waste.DrawSelected(spriteBatch, texture);
+            spriteBatch.End();
         }
 
         /// <summary>

@@ -19,6 +19,7 @@ namespace CS_Solitare
 
         // List of card indices in master list
         public List<int> cardList { get; private set; }
+        private List<Card> selectedCards;
 
         public enum DeckType
         {
@@ -41,6 +42,7 @@ namespace CS_Solitare
         public Deck()
         {
             cardList = new List<int>();
+            selectedCards = new List<Card>();
             location = new Rectangle();
         }
 
@@ -112,8 +114,7 @@ namespace CS_Solitare
         /// <param name="texture">Texture to draw from</param>
         public override void Draw(SpriteBatch spriteBatch, Texture2D texture)
         {
-            // TODO: Selected cards draw on top of idle cards.
-            spriteBatch.Begin();
+            selectedCards.Clear();
             foreach (int c in cardList)
             {
                 /*spriteBatch.Draw(
@@ -121,19 +122,46 @@ namespace CS_Solitare
                     DeckSystem.cards[c].CurrentLocation,
                     DeckSystem.carddatum[DeckSystem.cards[c].dataIndex].Invisible ? Card.CARDBACK_BLUE : DeckSystem.cards[c].frameRect,
                     Color.White);*/
+                if (!DeckSystem.cards[c].Selected)
+                    spriteBatch.Draw(
+                        texture,
+                        DeckSystem.cards[c].CurrentLocation,
+                        null,
+                        DeckSystem.carddatum[DeckSystem.cards[c].dataIndex].Invisible ? Card.CARDBACK_BLUE : DeckSystem.cards[c].frameRect,
+                        Vector2.Zero,
+                        0f,
+                        null,
+                        Color.White, 
+                        SpriteEffects.None,
+                        0f);
+                else
+                {
+                    selectedCards.Add(DeckSystem.cards[c]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called to draw the selected texture to the screen.
+        /// </summary>
+        /// <param name="spriteBatch">Used to draw textures to the screen</param>
+        /// <param name="texture">Texture to draw from</param>
+        public override void DrawSelected(SpriteBatch spriteBatch, Texture2D texture)
+        {
+            foreach (Card card in selectedCards)
+            {
                 spriteBatch.Draw(
                     texture,
-                    DeckSystem.cards[c].CurrentLocation,
+                    card.CurrentLocation,
                     null,
-                    DeckSystem.carddatum[DeckSystem.cards[c].dataIndex].Invisible ? Card.CARDBACK_BLUE : DeckSystem.cards[c].frameRect,
+                    DeckSystem.carddatum[card.dataIndex].Invisible ? Card.CARDBACK_BLUE : card.frameRect,
                     Vector2.Zero,
                     0f,
                     null,
-                    Color.White, 
+                    Color.White,
                     SpriteEffects.None,
                     1f);
             }
-            spriteBatch.End();
         }
 
         /// <summary>

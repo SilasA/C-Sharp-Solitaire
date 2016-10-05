@@ -118,7 +118,7 @@ namespace CS_Solitare
                     1f);
             spriteBatch.End();
             deckSystem.Draw(spriteBatch, cardSheet);
-
+            deckSystem.DrawSelected(spriteBatch, cardSheet);
             base.Draw(gameTime);
         }
     }

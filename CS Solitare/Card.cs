@@ -71,6 +71,19 @@ namespace CS_Solitare
         }
 
         /// <summary>
+        /// Copy Constructor. idk why this is here
+        /// </summary>
+        /// <param name="copy">Object to copy from</param>
+        public Card(Card copy)
+        {
+            currentLocation = copy.currentLocation;
+            originalLoc = copy.originalLoc;
+            frameRect = copy.frameRect;
+            dataIndex = copy.dataIndex;
+            selected = copy.selected;
+        }
+
+        /// <summary>
         /// Full constructor for all data.
         /// </summary>
         /// <param name="loc">Location of the card on-screen</param>

@@ -35,6 +35,16 @@ namespace CS_Solitare
         }
 
         /// <summary>
+        /// Called to draw the selected texture to the screen.
+        /// </summary>
+        /// <param name="spriteBatch">Used to draw textures to the screen</param>
+        /// <param name="texture">Texture to draw from</param>
+        public virtual void DrawSelected(SpriteBatch spriteBatch, Texture2D texture)
+        {
+
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="position"></param>
