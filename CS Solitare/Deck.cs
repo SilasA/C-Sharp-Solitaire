@@ -47,6 +47,20 @@ namespace CS_Solitare
         }
 
         /// <summary>
+        /// Copy Constructor.
+        /// </summary>
+        /// <param name="deck">Deck to copy</param>
+        public Deck(Deck copy)
+        {
+            cardPadding = copy.cardPadding;
+            cardList = new List<int>(copy.cardList);
+            selectedCards = new List<Card>(copy.selectedCards);
+            type = copy.type;
+            Id = copy.Id;
+            location = copy.location;
+        }
+
+        /// <summary>
         /// Construct Deck with an ID then call the default constructor.
         /// </summary>
         /// <param name="id">Assigned ID</param>
@@ -117,11 +131,6 @@ namespace CS_Solitare
             selectedCards.Clear();
             foreach (int c in cardList)
             {
-                /*spriteBatch.Draw(
-                    texture,
-                    DeckSystem.cards[c].CurrentLocation,
-                    DeckSystem.carddatum[DeckSystem.cards[c].dataIndex].Invisible ? Card.CARDBACK_BLUE : DeckSystem.cards[c].frameRect,
-                    Color.White);*/
                 if (!DeckSystem.cards[c].Selected)
                     spriteBatch.Draw(
                         texture,
@@ -190,7 +199,7 @@ namespace CS_Solitare
         ///     - Sets the current card's parent and child cards
         /// </summary>
         /// <param name="card">Card representation to add</param>
-        public void AddCard(int card)
+        public void AddCard(int card, bool visible = true)
         {
             DeckSystem.cards[card].OriginalLocation = CalculateNewCardPosition();
             cardList.Add(card);
@@ -210,7 +219,7 @@ namespace CS_Solitare
                 DeckSystem.carddatum[card].childCard = -1;
             }
 
-            DeckSystem.carddatum[cardList[Top()]].visibility = CardData.Visibility.Invisible;
+            DeckSystem.carddatum[cardList[Top()]].visibility = visible ? CardData.Visibility.Uncovered : CardData.Visibility.Invisible;
         }
 
         /// <summary>
@@ -234,11 +243,10 @@ namespace CS_Solitare
                 }
                 else
                     DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
-
+                if (DeckSystem.carddatum[cardList[idx]].childCard != -1)
+                    DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
+                DeckSystem.carddatum[cardList[idx]].parentDeckId = 0;
             }
-            if (idx - 1 >= 0 && DeckSystem.carddatum[cardList[idx]].childCard != -1)
-                DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
-            DeckSystem.carddatum[cardList[idx]].parentDeckId = 0;
             cardList.Remove(card);
             return card;
         }

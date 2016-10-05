@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 namespace CS_Solitare
 {
     /// <summary>
-    /// Class that manages all of the decks of cards.
+    /// Class that manages all of the card decks.
     /// </summary>
     class DeckSystem : Drawable
     {
@@ -64,13 +64,13 @@ namespace CS_Solitare
             {
                 for (int j = 0; j < i + 1; j++)
                 {
-                    tableau[i].AddCard(tempCardList[idx]);
+                    tableau[i].AddCard(tempCardList[idx], false);
                     idx++;
                 }
                 tableau[i].UncoverTop();
             }
             for (int i = idx; i < 52; i++)
-                hand.AddCard(tempCardList[i]);
+                hand.AddCard(tempCardList[i], false);
 
         }
 
@@ -133,10 +133,9 @@ namespace CS_Solitare
                 {
                     if (hand.IsEmpty())
                       MoveAllToHand();
-                    MoveOneToWaste();
+                    else MoveOneToWaste();
                 }
 
-                // TODO: Implement card selection
                 for (int i = 0; i < cards.Count; i++)
                 {
                     if (cards[i].Contains(new Vector2(state.X, state.Y)) &&
@@ -153,10 +152,61 @@ namespace CS_Solitare
                 for (int i = 0; i < cards.Count; i++)
                 {
                     if (cards[i].Contains(new Vector2(state.X, state.Y)) &&
-                        carddatum[i].parentDeckId != 1000)
+                        carddatum[i].parentDeckId != 1000 &&
+                        cards[i].Selected)
                     {
                         cards[i].Selected = false;
-                        cards[i].ReturnToOrigin();
+                        foreach (Card card in cards)
+                        {
+                            if (card.Contains(new Vector2(state.X, state.Y)))
+                            {
+                                int targetId = carddatum[card.dataIndex].parentDeckId;
+                                // If target is in the tableau
+                                if (targetId >= 10 && targetId <= 90)
+                                {
+                                    int sourceId = carddatum[cards[i].dataIndex].parentDeckId;
+                                    if (sourceId == targetId) break;
+
+                                    // Source is in the tableau
+                                    if (sourceId >= 10 && targetId <= 90)
+                                    {
+                                        tableau[(targetId / 10) - 1].AddCard(tableau[(sourceId / 10) - 1].RemoveCard(card.dataIndex));
+                                    }
+                                    // Source is in the foundation
+                                    else if (sourceId >= 100 && sourceId <= 900)
+                                    {
+                                        tableau[(targetId / 100) - 1].AddCard(foundation[(sourceId / 100) - 1].RemoveCard(card.dataIndex));
+                                    }
+                                    // Source is the waste
+                                    else if (sourceId == 2000)
+                                    {
+                                        tableau[(targetId / 1000) - 1].AddCard(waste.RemoveCard(card.dataIndex));
+                                    }
+                                    break;
+                                }
+                                // If target is in the foundation
+                                else if (targetId >= 100 && targetId <= 900)
+                                {
+                                    int sourceId = carddatum[cards[i].dataIndex].parentDeckId;
+                                    if (sourceId == targetId) break;
+                                    if (sourceId >= 10 && targetId <= 90)
+                                    {
+                                        foundation[(targetId / 10) - 1].AddCard(tableau[(sourceId / 10) - 1].RemoveCard(card.dataIndex));
+                                    }
+                                    else if (sourceId >= 100 && sourceId <= 900)
+                                    {
+                                        foundation[(targetId / 100) - 1].AddCard(foundation[(sourceId / 100) - 1].RemoveCard(card.dataIndex));
+                                    }
+                                    else if (sourceId == 2000)
+                                    {
+                                        foundation[(targetId / 1000) - 1].AddCard(waste.RemoveCard(card.dataIndex));
+                                    }
+                                    break;
+                                }
+                            }
+                            else cards[i].ReturnToOrigin();
+
+                        }
                     }
                 }
             }
