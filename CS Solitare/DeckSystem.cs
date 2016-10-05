@@ -126,7 +126,40 @@ namespace CS_Solitare
         {
             MouseState state = Mouse.GetState();
 
-            // TODO: transfer from hand to waste
+            if (IsLeftClicked(state))
+            {
+                // Hand/Waste
+                if (hand.Contains(new Vector2(state.X, state.Y)))
+                {
+                    if (hand.IsEmpty())
+                      MoveAllToHand();
+                    MoveOneToWaste();
+                }
+
+                // TODO: Implement card selection
+                for (int i = 0; i < cards.Count; i++)
+                {
+                    if (cards[i].Contains(new Vector2(state.X, state.Y)) &&
+                        carddatum[i].parentDeckId != 1000)
+                    {
+                        cards[i].Selected = true;
+                        break;
+                    }
+                }
+
+            }
+            else if (IsLeftReleased(state))
+            {
+                for (int i = 0; i < cards.Count; i++)
+                {
+                    if (cards[i].Contains(new Vector2(state.X, state.Y)) &&
+                        carddatum[i].parentDeckId != 1000)
+                    {
+                        cards[i].Selected = false;
+                        cards[i].ReturnToOrigin();
+                    }
+                }
+            }
 
             foreach (Deck deck in tableau)
                 deck.Update(gameTime);
@@ -159,6 +192,7 @@ namespace CS_Solitare
         private void MoveOneToWaste()
         {
             waste.AddCard(hand.RemoveCard(hand.cardList[hand.Top()]));
+            waste.UncoverTop();
         }
 
         /// <summary>
@@ -179,6 +213,17 @@ namespace CS_Solitare
         {
             return state.LeftButton == ButtonState.Pressed &&
                 Game1.oldState.LeftButton == ButtonState.Released;
+        }
+
+        /// <summary>
+        /// Checks is LeftButton is released after it was pressed.
+        /// </summary>
+        /// <param name="state">State of the mouse</param>
+        /// <returns></returns>
+        private bool IsLeftReleased(MouseState state)
+        {
+            return state.LeftButton == ButtonState.Released &&
+                Game1.oldState.LeftButton == ButtonState.Pressed;
         }
 
         /// <summary>

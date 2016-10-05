@@ -31,8 +31,7 @@ namespace CS_Solitare
         /// </summary>
         public override void UncoverTop()
         {
-            if (cardList.Count > 0)
-                DeckSystem.carddatum[cardList[Top()]].visibility = CardData.Visibility.Uncovered;
+            base.UncoverTop();
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace CS_Solitare
         /// </summary>
         /// <param name="id">ID number</param>
         public Waste(int id) :
-            base(id, new Rectangle(PADDING + Card.CARDSIZE_X, PADDING, Card.CARDSIZE_X, Card.CARDSIZE_Y), 0)
+            base(id, new Rectangle(PADDING * (id / 1000) + Card.CARDSIZE_X, PADDING, Card.CARDSIZE_X, Card.CARDSIZE_Y), 0)
         {
         }
 
@@ -27,6 +27,14 @@ namespace CS_Solitare
         public override bool IsValidMove(CardData cardToMove, CardData cardMoveTo)
         {
             return cardToMove.parentDeckId == 1000;
+        }
+
+        /// <summary>
+        /// Uncovers the top card of the deck.
+        /// </summary>
+        public override void UncoverTop()
+        {
+            base.UncoverTop();
         }
     }
 }

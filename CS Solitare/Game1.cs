@@ -23,6 +23,7 @@ namespace CS_Solitare
         Texture2D background;
 
         public static MouseState oldState;
+        public static KeyboardState oldKBState;
 
         /// <summary>
         /// Sets resolution and cursor visibility.
@@ -79,15 +80,19 @@ namespace CS_Solitare
         protected override void Update(GameTime gameTime)
         {
             MouseState state = Mouse.GetState();
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            KeyboardState kbState = Keyboard.GetState();
+
+            if (kbState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.R))
+            // Re-Initialize
+            if (kbState.IsKeyDown(Keys.R) && oldKBState.IsKeyUp(Keys.R))
                 Initialize();
 
             deckSystem.Update(gameTime);
 
             oldState = state;
+            oldKBState = kbState;
             base.Update(gameTime);
         }
 
@@ -100,7 +105,17 @@ namespace CS_Solitare
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
+            spriteBatch.Draw(
+                    background,
+                    Vector2.Zero,
+                    null,
+                    new Rectangle(0, 0, background.Width, background.Height),
+                    Vector2.Zero,
+                    0f,
+                    null,
+                    Color.White,
+                    SpriteEffects.None,
+                    1f);
             spriteBatch.End();
             deckSystem.Draw(spriteBatch, cardSheet);
 

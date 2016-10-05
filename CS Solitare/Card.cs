@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace CS_Solitare
 {
@@ -22,10 +22,24 @@ namespace CS_Solitare
         public readonly static Rectangle CARDBACK_RED = new Rectangle(CARDSIZE_X * 13, CARDSIZE_Y * 2, CARDSIZE_X, CARDSIZE_Y);
         public readonly static Rectangle CARDBACK_TRANS = new Rectangle(CARDSIZE_X * 13, CARDSIZE_Y * 3, CARDSIZE_X, CARDSIZE_Y);
 
-        public Vector2 currentLocation { get; set; }
+        private Vector2 currentLocation;
+        public Vector2 CurrentLocation
+        {
+            get
+            {
+                return currentLocation;
+            }
+            set
+            {
+                currentLocation = value;
+                int count = 1;
+                for (int idx = dataIndex; DeckSystem.carddatum[idx].childCard != -1; idx++)
+                    DeckSystem.cards[DeckSystem.carddatum[idx].childCard].currentLocation = new Vector2(value.X, value.Y + Deck.PADDING * count++);
+            }
+        }
 
         private Vector2 originalLoc;
-        public Vector2 originalLocation
+        public Vector2 OriginalLocation
         {
             get { return originalLoc; }
             set
@@ -40,7 +54,21 @@ namespace CS_Solitare
         public int dataIndex { get; private set; }
 
         public bool padded { get; set; }
-        public bool selected { get; set; }
+
+        private bool selected;
+        public bool Selected
+        {
+            get
+            {
+                return selected;
+            }
+            set
+            {
+                selected = value;
+                for (int idx = dataIndex; DeckSystem.carddatum[idx].childCard != -1; idx++)
+                    DeckSystem.cards[DeckSystem.carddatum[idx].childCard].selected = value;
+            }
+        }
 
         /// <summary>
         /// Full constructor for all data.
@@ -51,7 +79,7 @@ namespace CS_Solitare
         public Card(Vector2 loc, Rectangle frameRect, int dataIndex)
         {
             currentLocation = loc;
-            originalLocation = loc;
+            OriginalLocation = loc;
             this.frameRect = frameRect;
             this.dataIndex = dataIndex;
         }
@@ -61,24 +89,31 @@ namespace CS_Solitare
         /// </summary>
         public void ReturnToOrigin()
         {
-            currentLocation = originalLocation;
+            currentLocation = OriginalLocation;
         }
 
         /// <summary>
         /// Checks if the provided Coordinates are within the cards bounds and the card is selectable.
         /// </summary>
         /// <param name="pos">Coordinates</param>
+        /// <param name="considerVisibility">If to take the cards visibility into account as its selectable dimensions</param>
         /// <returns>If within card</returns>
-        public bool Contains(Vector2 pos)
+        public bool Contains(Vector2 pos, bool considerVisibility = true)
         {
             CardData cd = DeckSystem.carddatum[dataIndex];
-            if (cd.Covered && !cd.Invisible)
-                return pos.X >= currentLocation.X && pos.X <= currentLocation.X + (padded ? Tableau.padding : 0) &&
-                    pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + (padded ? Tableau.padding : 0);
-            else if (!cd.Covered && !cd.Invisible)
+            if (considerVisibility)
+            {
+                if (cd.Covered && !cd.Invisible)
+                    return pos.X >= currentLocation.X && pos.X <= currentLocation.X + (padded ? Tableau.padding : 0) &&
+                        pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + (padded ? Tableau.padding : 0);
+                else if (cd.Uncovered)
+                    return pos.X >= currentLocation.X && pos.X <= currentLocation.X + CARDSIZE_X &&
+                        pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + CARDSIZE_Y;
+                else return false;
+            }
+            else
                 return pos.X >= currentLocation.X && pos.X <= currentLocation.X + CARDSIZE_X &&
                     pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + CARDSIZE_Y;
-            else return false;
         }
     }
 }

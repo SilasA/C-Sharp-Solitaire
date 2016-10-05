@@ -33,5 +33,16 @@ namespace CS_Solitare
         {
 
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public virtual bool Contains(Vector2 position)
+        {
+            return position.X >= location.X && position.X <= location.X + location.Width &&
+                position.Y >= location.Y && position.Y <= location.Y + location.Height;
+        }
     }
 }

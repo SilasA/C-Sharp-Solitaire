@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace CS_Solitare
 {
@@ -87,37 +88,50 @@ namespace CS_Solitare
         /// <param name="gameTime">Time state of the game</param>
         public override void Update(GameTime gameTime)
         {
+            MouseState state = Mouse.GetState();
             int idx = 0;
             foreach (int c in cardList)
             {
                 CardData cd = DeckSystem.carddatum[DeckSystem.cards[c].dataIndex];
-                if (DeckSystem.cards[c].selected)
+                if (DeckSystem.cards[c].Selected)
                 {
-
+                    DeckSystem.cards[c].CurrentLocation = new Vector2(state.X - Card.CARDSIZE_X / 2, state.Y - Card.CARDSIZE_Y / 2);
                 }
                 else
                 {
-                    DeckSystem.cards[c].originalLocation = new Vector2(location.X, location.Y + cardPadding * idx);
+                    DeckSystem.cards[c].OriginalLocation = new Vector2(location.X, location.Y + cardPadding * idx);
                 }
                 idx++;
             }
         }
 
         /// <summary>
-        /// Called to draw textures to the screen.
+        /// Called to draw textures to the screen. SpriteBatch.Begin() must be called prior to this.
         /// </summary>
         /// <param name="spriteBatch">Used to draw textures to the screen</param>
         /// <param name="texture">Texture to draw from</param>
         public override void Draw(SpriteBatch spriteBatch, Texture2D texture)
         {
+            // TODO: Selected cards draw on top of idle cards.
             spriteBatch.Begin();
             foreach (int c in cardList)
             {
+                /*spriteBatch.Draw(
+                    texture,
+                    DeckSystem.cards[c].CurrentLocation,
+                    DeckSystem.carddatum[DeckSystem.cards[c].dataIndex].Invisible ? Card.CARDBACK_BLUE : DeckSystem.cards[c].frameRect,
+                    Color.White);*/
                 spriteBatch.Draw(
                     texture,
-                    DeckSystem.cards[c].currentLocation,
+                    DeckSystem.cards[c].CurrentLocation,
+                    null,
                     DeckSystem.carddatum[DeckSystem.cards[c].dataIndex].Invisible ? Card.CARDBACK_BLUE : DeckSystem.cards[c].frameRect,
-                    Color.White);
+                    Vector2.Zero,
+                    0f,
+                    null,
+                    Color.White, 
+                    SpriteEffects.None,
+                    1f);
             }
             spriteBatch.End();
         }
@@ -127,6 +141,8 @@ namespace CS_Solitare
         /// </summary>
         public virtual void UncoverTop()
         {
+            if (cardList.Count > 0)
+                DeckSystem.carddatum[cardList[Top()]].visibility = CardData.Visibility.Uncovered;
         }
 
         /// <summary>
@@ -148,7 +164,7 @@ namespace CS_Solitare
         /// <param name="card">Card representation to add</param>
         public void AddCard(int card)
         {
-            DeckSystem.cards[card].originalLocation = CalculateNewCardPosition();
+            DeckSystem.cards[card].OriginalLocation = CalculateNewCardPosition();
             cardList.Add(card);
             DeckSystem.carddatum[cardList[Top()]].parentDeckId = Id;
             DeckSystem.cards[cardList[Top()]].padded = cardPadding != 0;
@@ -166,7 +182,8 @@ namespace CS_Solitare
                 DeckSystem.carddatum[card].childCard = -1;
             }
 
-        } 
+            DeckSystem.carddatum[cardList[Top()]].visibility = CardData.Visibility.Invisible;
+        }
 
         /// <summary>
         /// Removes a card from the deck.
@@ -178,18 +195,20 @@ namespace CS_Solitare
             int idx = cardList.IndexOf(card);
             if (idx - 1 >= 0)
             {
-                DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].parentCard].childCard = 
-                    DeckSystem.carddatum[cardList[idx]].childCard;
+                if (DeckSystem.carddatum[cardList[idx]].parentCard != -1)
+                    DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].parentCard].childCard = 
+                        DeckSystem.carddatum[cardList[idx]].childCard;
                 if (idx <= Top())
                 {
-                    DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard =
-                        DeckSystem.carddatum[cardList[idx]].parentCard;
+                    if (DeckSystem.carddatum[cardList[idx]].childCard != -1)
+                        DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard =
+                            DeckSystem.carddatum[cardList[idx]].parentCard;
                 }
                 else
                     DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
 
             }
-            if (cardList[idx] - 1 >= 0)
+            if (idx - 1 >= 0 && DeckSystem.carddatum[cardList[idx]].childCard != -1)
                 DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
             DeckSystem.carddatum[cardList[idx]].parentDeckId = 0;
             cardList.Remove(card);
