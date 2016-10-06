@@ -65,8 +65,15 @@ namespace CS_Solitare
             set
             {
                 selected = value;
-                for (int idx = dataIndex; DeckSystem.carddatum[idx].childCard != -1; idx++)
-                    DeckSystem.cards[DeckSystem.carddatum[idx].childCard].selected = value;
+                // Bank of parent card indices
+                for (int i = 0; i < DeckSystem.cards.Count; i++)
+                {
+                    if (DeckSystem.carddatum[i].parentCard == dataIndex)
+                    {
+                        DeckSystem.cards[i].Selected = value;
+                        break;
+                    }
+                }
             }
         }
 
@@ -117,8 +124,8 @@ namespace CS_Solitare
             if (considerVisibility)
             {
                 if (cd.Covered && !cd.Invisible)
-                    return pos.X >= currentLocation.X && pos.X <= currentLocation.X + (DeckSystem.carddatum[dataIndex].parentCard != -1 ? Tableau.padding : 0) &&
-                        pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + (DeckSystem.carddatum[dataIndex].parentCard != -1 ? Tableau.padding : 0);
+                    return pos.X >= currentLocation.X && pos.X <= currentLocation.X + (padded ? Tableau.padding : 0) &&
+                        pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + (padded ? Tableau.padding : 0);
                 else if (cd.Uncovered)
                     return pos.X >= currentLocation.X && pos.X <= currentLocation.X + CARDSIZE_X &&
                         pos.Y >= currentLocation.Y && pos.Y <= currentLocation.Y + CARDSIZE_Y;

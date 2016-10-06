@@ -183,6 +183,15 @@ namespace CS_Solitare
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public virtual void CoverTop()
+        {
+            if (cardList.Count > 0)
+                DeckSystem.carddatum[cardList[Top()]].visibility = CardData.Visibility.Invisible;
+        }
+
+        /// <summary>
         /// Returns the top card's index.
         /// </summary>
         /// <returns></returns>
@@ -201,6 +210,11 @@ namespace CS_Solitare
         /// <param name="card">Card representation to add</param>
         public void AddCard(int card, bool visible = true)
         {
+            if (DeckSystem.carddatum[card].parentDeckId == Id)
+            {
+                DeckSystem.cards[card].ReturnToOrigin();
+                return;
+            }
             DeckSystem.cards[card].OriginalLocation = CalculateNewCardPosition();
             cardList.Add(card);
             DeckSystem.carddatum[cardList[Top()]].parentDeckId = Id;
@@ -219,7 +233,8 @@ namespace CS_Solitare
                 DeckSystem.carddatum[card].childCard = -1;
             }
 
-            DeckSystem.carddatum[cardList[Top()]].visibility = visible ? CardData.Visibility.Uncovered : CardData.Visibility.Invisible;
+            if (visible) UncoverTop();
+            else CoverTop();
         }
 
         /// <summary>
@@ -227,7 +242,7 @@ namespace CS_Solitare
         /// </summary>
         /// <param name="card">Card to remove</param>
         /// <returns>The id of the card removed</returns>
-        public int RemoveCard(int card)
+        public int RemoveCard(int card, bool visible = true)
         {
             int idx = cardList.IndexOf(card);
             if (idx - 1 >= 0)
@@ -243,11 +258,13 @@ namespace CS_Solitare
                 }
                 else
                     DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
-                if (DeckSystem.carddatum[cardList[idx]].childCard != -1)
-                    DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
-                DeckSystem.carddatum[cardList[idx]].parentDeckId = 0;
+               // if (DeckSystem.carddatum[cardList[idx]].childCard != -1)
+                    //DeckSystem.carddatum[DeckSystem.carddatum[cardList[idx]].childCard].parentCard = -1;
+                DeckSystem.carddatum[cardList[idx]].parentDeckId = -1;
             }
             cardList.Remove(card);
+            if (visible) UncoverTop();
+            else CoverTop();
             return card;
         }
     }

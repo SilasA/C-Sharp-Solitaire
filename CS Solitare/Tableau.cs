@@ -43,8 +43,9 @@ namespace CS_Solitare
         public override bool IsValidMove(CardData cardToMove, CardData cardMoveTo)
         {
             return
-                cardToMove.IsBlack() != cardMoveTo.IsBlack() &&
-                cardMoveTo.CardId + 1 == cardMoveTo.CardId &&
+                cardToMove.IsBlack() != cardMoveTo.IsBlack() &&         // Mixed color
+                cardToMove.CardId + 1 == cardMoveTo.CardId &&           // Descending order
+                cardList.Count > 0 ? true : cardToMove.CardId == 13 &&  // If deck empty, check for king
                 base.IsValidMove(cardToMove, cardMoveTo);
         }
 
@@ -55,7 +56,7 @@ namespace CS_Solitare
         public override void Update(GameTime gameTime)
         {
             // Adjust padding with card count
-            cardPadding = cardList.Count > 10 ? 15 : 20;
+            cardPadding = cardList.Count > 10 ? 20 : 25;
             base.Update(gameTime);
         }
 
